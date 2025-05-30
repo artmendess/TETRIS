@@ -1,6 +1,7 @@
 from settings import *
 import math
 from tetromino import Tetromino
+from mixinlog import MixinLogRoute
 import pygame.freetype as ft
 import json
 import os
@@ -99,6 +100,16 @@ class Tetris:
                 self.next_tetromino = Tetromino(self, current=False)
 
     def control(self, pressed_key):
+
+        key_name = pg.key.name(pressed_key)
+        logger = MixinLogRoute(
+            rota="Tetris.control",
+            metodo=f"keydown_{key_name}",
+            funcao="processar controle de peça"
+        )
+        logger.mostrar_log()
+
+
         if pressed_key == pg.K_LEFT:
             self.tetromino.move(direction='left')
         elif pressed_key == pg.K_RIGHT:

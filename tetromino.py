@@ -1,4 +1,5 @@
 from settings import *
+from mixinlog import MixinLogRoute
 import random
 
 
@@ -39,6 +40,15 @@ class Block(pg.sprite.Sprite):
                 self.kill()
 
     def rotate(self, pivot_pos):
+
+        logger = MixinLogRoute(
+            rota="Tetromino.rotate",
+            metodo="rotate_90",
+            funcao="rotacionar tetromino"
+        )
+        logger.mostrar_log()
+
+
         translated = self.pos - pivot_pos
         rotated = translated.rotate(90)
         return rotated + pivot_pos
@@ -78,6 +88,15 @@ class Tetromino:
         return any(map(Block.is_collide, self.blocks, block_positions))
 
     def move(self, direction):
+
+        logger = MixinLogRoute(
+            rota="Tetromino.move",
+            metodo=f"move_{direction}",
+            funcao="mover tetromino"
+        )
+        logger.mostrar_log()
+
+
         move_direction = MOVE_DIRECTIONS[direction]
         new_block_positions = [block.pos + move_direction for block in self.blocks]
         is_collide = self.is_collide(new_block_positions)
